@@ -84,10 +84,13 @@ public class ConstSetBA {
 		//间隔分钟数
 		public static final Integer INTERVAL_MINUTE =1; 	//分钟
 
+		//入库起点位置
+		public static final String START_LOCNO = "入库起点货位";
+		public static final String START_ZONENO = "入库起点货位";
 		
-		
-		
-		
+		//出库库终点位置
+		public static final String END_LOCNO = "出库终点货位";
+		public static final String END_ZONENO = "出库终点货位";
 		
 		
 		

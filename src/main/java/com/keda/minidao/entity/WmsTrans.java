@@ -10,6 +10,7 @@ import java.util.Date;
 public class WmsTrans implements java.io.Serializable {
 
 	private Integer id;
+	private Integer transid;
 	private String createName;
 	private String createBy;
 	private Date createDate;
@@ -24,8 +25,10 @@ public class WmsTrans implements java.io.Serializable {
 	private String transtype;
 	private String goodsname;
 	private Integer transqty;
-	private String locno;
-	private String zoneno;
+	private String deslocno;
+	private String deszoneno;
+	private String orglocno;
+	private String orgzoneno;
 	private String sourceid;
 	private String sourcedtlid;
 	private String trstatus;
@@ -37,8 +40,8 @@ public class WmsTrans implements java.io.Serializable {
 			String updateName, String updateBy, Date updateDate,
 			String sysOrgCode, String sysCompanyCode, String bpmStatus,
 			String transno, Date transdate, String transtype, String goodsname,
-			Integer transqty, String locno, String zoneno, String sourceid,
-			String sourcedtlid, String trstatus) {
+			Integer transqty, String orglocno, String orgzoneno, String sourceid,
+			String deslocno, String deszoneno, String sourcedtlid, String trstatus) {
 		this.createName = createName;
 		this.createBy = createBy;
 		this.createDate = createDate;
@@ -53,8 +56,10 @@ public class WmsTrans implements java.io.Serializable {
 		this.transtype = transtype;
 		this.goodsname = goodsname;
 		this.transqty = transqty;
-		this.locno = locno;
-		this.zoneno = zoneno;
+		this.deslocno = deslocno;
+		this.deszoneno = deszoneno;
+		this.orglocno = orglocno;
+		this.orgzoneno = orgzoneno;
 		this.sourceid = sourceid;
 		this.sourcedtlid = sourcedtlid;
 		this.trstatus = trstatus;
@@ -180,20 +185,44 @@ public class WmsTrans implements java.io.Serializable {
 		this.transqty = transqty;
 	}
 
-	public String getLocno() {
-		return this.locno;
+	public Integer getTransid() {
+		return transid;
 	}
 
-	public void setLocno(String locno) {
-		this.locno = locno;
+	public void setTransid(Integer transid) {
+		this.transid = transid;
 	}
 
-	public String getZoneno() {
-		return this.zoneno;
+	public String getDeslocno() {
+		return deslocno;
 	}
 
-	public void setZoneno(String zoneno) {
-		this.zoneno = zoneno;
+	public void setDeslocno(String deslocno) {
+		this.deslocno = deslocno;
+	}
+
+	public String getDeszoneno() {
+		return deszoneno;
+	}
+
+	public void setDeszoneno(String deszoneno) {
+		this.deszoneno = deszoneno;
+	}
+
+	public String getOrglocno() {
+		return orglocno;
+	}
+
+	public void setOrglocno(String orglocno) {
+		this.orglocno = orglocno;
+	}
+
+	public String getOrgzoneno() {
+		return orgzoneno;
+	}
+
+	public void setOrgzoneno(String orgzoneno) {
+		this.orgzoneno = orgzoneno;
 	}
 
 	public String getSourceid() {

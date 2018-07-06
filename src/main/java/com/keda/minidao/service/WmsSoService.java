@@ -1,12 +1,10 @@
 package com.keda.minidao.service;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,7 +22,6 @@ import com.keda.minidao.dao.WmsSodtlDao;
 import com.keda.minidao.dao.WmsLocDao;
 import com.keda.minidao.dao.WmsStockDao;
 import com.keda.minidao.dao.WmsTransDao;
-import com.keda.minidao.entity.WmsFetch;
 import com.keda.minidao.entity.WmsSo;
 import com.keda.minidao.entity.WmsSodtl;
 import com.keda.minidao.entity.WmsLoc;
@@ -85,12 +82,21 @@ public class WmsSoService {
 	 * 出库分配
 	 */
 	@Transactional
-	public void soTransactionalInsert(Map map){
+	public void soTransactionalInsert(Map<String,Object> map){
 		WmsSo so = new WmsSo();
 		so = soDao.get((String)map.get("id"));
 		List<WmsSodtl> sodtllist = sodtlDao.getDtlBySoId(so.getId());
 			//暂时按数量，品种，返回单条库存记录扣减，后续修改为可支持大数量分配多条库存的情况
 			for(WmsSodtl sdtl:sodtllist){
+				//如果货位为空，则启动货位分配逻辑，查询返回最适合的货位
+//				if (sdtl.getLocno() == null || sdtl.getLocno() == "") {
+//					//根据货品查找优先级最高的货位
+//					findLocByGoodsno(sdtl);
+//				}
+				
+				
+				
+				
 				WmsStock stock = new WmsStock();
 				//查询满足条件的单条库存记录，等待扣减
 				stock = stockDao.findStockBySodtl(sdtl.getGoodsno(),sdtl.getSoqty(),sdtl.getLocno());
@@ -98,7 +104,7 @@ public class WmsSoService {
 					throw new BusinessException("库存可能已经分配，请重新做单！");
 				}
 				//根据带扣减库存记录生成交易信息
-				Map value = genTransValue(so,sdtl,stock);
+				Map<String,Object> value = genTransValue(so,sdtl,stock);
 				try {
 					insertStoretrans(value);
 				} catch (Exception e) {
@@ -129,9 +135,9 @@ public class WmsSoService {
 		} 
   
 	//组装交易信息生成交易记录
-	public Map genTransValue(WmsSo so,WmsSodtl sdtl,WmsStock stock){
+	public Map<String,Object> genTransValue(WmsSo so,WmsSodtl sdtl,WmsStock stock){
 		try {
-			Map transvalue = new HashMap();
+			Map<String,Object> transvalue = new HashMap<String,Object>();
 			transvalue.put("create_name", so.getCreateName());
 			transvalue.put("create_by",so.getCreateBy());
 			transvalue.put("create_date",stock.getCreateDate());
@@ -151,7 +157,24 @@ public class WmsSoService {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
+	//根据货品查找优先级最高的货位
+	public void findLocByGoodsno(WmsSodtl sdtl) throws BusinessException {
+		try {
+			
+			
+			
+			
+			String goodsno = sdtl.getGoodsno();
+			String locno = locDao.getLocByGoodsno(goodsno);
+			String zoneno = locDao.getZonenoByLocno(locno);
+			sdtl.setZoneno(zoneno);
+			sdtl.setLocno(locno);
+		} catch (Exception e) {
+			throw new BusinessException(e.getMessage());
+		}
+	}
+	
 	//修改入库状态
 	public void updateSoStatus(String soid) throws BusinessException {
 		try {
@@ -176,7 +199,7 @@ public class WmsSoService {
 		}
 	}
 	//生成交易信息
-	public void insertStoretrans(Map values) throws Exception {
+	public void insertStoretrans(Map<String,Object> values) throws Exception {
 		if (values == null) {
 			return;
 		}
@@ -231,16 +254,28 @@ public class WmsSoService {
 			trans.setTransqty(null);
 		}
 		
-		if (values.get("locno") != null && !"".equals(values.get("locno"))) {
-			trans.setLocno((String) values.get("locno"));
-		} else if (values.get("locno") == null || "".equals(values.get("locno"))) {
-			trans.setLocno(null);
+		if (values.get("deslocno") != null && !"".equals(values.get("deslocno"))) {
+			trans.setDeslocno((String) values.get("deslocno"));
+		} else if (values.get("deslocno") == null || "".equals(values.get("deslocno"))) {
+			trans.setDeslocno(null);
 		}
 		
 		if (values.get("zoneno") != null && !"".equals(values.get("zoneno"))) {
-			trans.setZoneno((String) values.get("zoneno"));
+			trans.setDeszoneno((String) values.get("zoneno"));
 		} else if (values.get("zoneno") == null || "".equals(values.get("zoneno"))) {
-			trans.setZoneno(null);
+			trans.setDeszoneno(null);
+		}
+		
+		if (values.get("orglocno") != null && !"".equals(values.get("orglocno"))) {
+			trans.setOrglocno((String) values.get("orglocno"));
+		} else if (values.get("orglocno") == null || "".equals(values.get("orglocno"))) {
+			trans.setOrglocno(null);
+		}
+		
+		if (values.get("orgzoneno") != null && !"".equals(values.get("orgzoneno"))) {
+			trans.setOrgzoneno((String) values.get("orgzoneno"));
+		} else if (values.get("orgzoneno") == null || "".equals(values.get("orgzoneno"))) {
+			trans.setOrgzoneno(null);
 		}
 		
 		if (values.get("sourceid") != null && !"".equals(values.get("sourceid"))) {

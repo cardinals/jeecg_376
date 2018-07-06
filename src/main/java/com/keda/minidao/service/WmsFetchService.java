@@ -177,8 +177,10 @@ public class WmsFetchService {
 			transvalue.put("transtype",ConstSetBA.TRANSTYPE_IN);
 			transvalue.put("goodaname",stock.getGoodsname());
 			transvalue.put("transqty",stock.getStockqty());
-			transvalue.put("locno",stock.getLocno());
-			transvalue.put("zoneno",stock.getZoneno());
+			transvalue.put("deslocno",stock.getLocno());
+			transvalue.put("deszoneno",stock.getZoneno());
+			transvalue.put("orglocno",ConstSetBA.START_LOCNO);
+			transvalue.put("orgzoneno",ConstSetBA.START_ZONENO);
 			transvalue.put("sourceid",fetch.getId());
 			transvalue.put("sourcedtlid",fdtl.getId());
 			transvalue.put("trstatus",ConstSetBA.TRANS_STATUS_FINISHED);
@@ -270,16 +272,28 @@ public class WmsFetchService {
 				trans.setTransqty(null);
 			}
 			
-			if (values.get("locno") != null && !"".equals(values.get("locno"))) {
-				trans.setLocno((String) values.get("locno"));
-			} else if (values.get("locno") == null || "".equals(values.get("locno"))) {
-				trans.setLocno(null);
+			if (values.get("deslocno") != null && !"".equals(values.get("deslocno"))) {
+				trans.setDeslocno((String) values.get("deslocno"));
+			} else if (values.get("deslocno") == null || "".equals(values.get("deslocno"))) {
+				trans.setDeslocno(null);
 			}
 			
-			if (values.get("zoneno") != null && !"".equals(values.get("zoneno"))) {
-				trans.setZoneno((String) values.get("zoneno"));
-			} else if (values.get("zoneno") == null || "".equals(values.get("zoneno"))) {
-				trans.setZoneno(null);
+			if (values.get("deszoneno") != null && !"".equals(values.get("deszoneno"))) {
+				trans.setDeszoneno((String) values.get("deszoneno"));
+			} else if (values.get("deszoneno") == null || "".equals(values.get("deszoneno"))) {
+				trans.setDeszoneno(null);
+			}
+			
+			if (values.get("orglocno") != null && !"".equals(values.get("orglocno"))) {
+				trans.setOrglocno((String) values.get("orglocno"));
+			} else if (values.get("orglocno") == null || "".equals(values.get("orglocno"))) {
+				trans.setOrglocno(null);
+			}
+			
+			if (values.get("orgzoneno") != null && !"".equals(values.get("orgzoneno"))) {
+				trans.setDeszoneno((String) values.get("orgzoneno"));
+			} else if (values.get("orgzoneno") == null || "".equals(values.get("orgzoneno"))) {
+				trans.setDeszoneno(null);
 			}
 			
 			if (values.get("sourceid") != null && !"".equals(values.get("sourceid"))) {

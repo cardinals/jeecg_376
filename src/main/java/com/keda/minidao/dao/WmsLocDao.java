@@ -26,6 +26,23 @@ import com.keda.minidao.entity.WmsStock;
 public interface WmsLocDao {
 
 	/**
+	 * 根据货品编码查询货位编码
+	 * @param goodsno
+	 * @return
+	 */
+	@Sql(" select s.locno from wms_stock s,wms_loc l where s.goodsno = :goodsno and s.topflag = 1 order by l.loclevel limit 1")
+	public String getLocByGoodsno(@Param("goodsno") String goodsno);
+	
+	/**
+	 * 根据货位编码返回区域编码
+	 * @param locno
+	 * @return
+	 */
+	@Sql(" select zoneno from wms_loc where locno = :locno")
+	public String getZonenoByLocno(@Param("locno") String locno);
+	
+	
+	/**
 	 * 返回所有存在库存的货位
 	 * @param id
 	 * @return

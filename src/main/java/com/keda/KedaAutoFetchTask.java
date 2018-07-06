@@ -1,7 +1,5 @@
 package com.keda;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,15 +7,9 @@ import java.util.Map;
 import com.keda.KedaCgformJavaInterDemo;
 import com.keda.minidao.dao.WmsFetchDao;
 import com.keda.minidao.entity.WmsFetch;
-import com.keda.minidao.dao.WmsFetchdtlDao;
-import com.keda.minidao.entity.WmsFetch;
-import com.keda.minidao.entity.WmsFetchdtl;
 import com.keda.minidao.service.WmsFetchService;
 
 
-
-
-import org.jeecgframework.core.common.exception.BusinessException;
 import org.jeecgframework.web.system.sms.service.TSSmsServiceI;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

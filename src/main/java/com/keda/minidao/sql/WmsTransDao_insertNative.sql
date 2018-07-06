@@ -1,7 +1,8 @@
 INSERT  INTO
 	wms_trans
       ( 
-      id                            
+      id    
+      ,transid
       ,create_name                          
       ,create_by                           
       ,create_date                            
@@ -16,15 +17,18 @@ INSERT  INTO
       ,transtype                           
       ,goodsname                            
       ,transqty                       
-      ,locno                         
-      ,zoneno                      
+      ,deslocno                         
+      ,deszoneno
+      ,orglocno
+      ,orgzoneno
       ,sourceid
       ,sourcedtlid
       ,trstatus
       ) 
 values
       (
-      :trans.id                            
+      :trans.id      
+      ,:trans.id 
       ,:trans.createName                          
       ,:trans.createBy                           
       ,:trans.createDate                            
@@ -39,8 +43,10 @@ values
       ,:trans.transtype                           
       ,:trans.goodsname                            
       ,:trans.transqty                       
-      ,:trans.locno                         
-      ,:trans.zoneno                      
+      ,:trans.deslocno                         
+      ,:trans.deszoneno 
+      ,:trans.orglocno
+      ,:trans.orgzoneno
       ,:trans.sourceid
       ,:trans.sourcedtlid
       ,:trans.trstatus                   
